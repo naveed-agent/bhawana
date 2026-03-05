@@ -42,10 +42,30 @@ export default function Dashboard() {
       />
 
       <input
-        placeholder="image url"
-        onChange={(e)=>setImage(e.target.value)}
-        className="border p-2"
-      />
+        
+  type="file"
+  onChange={async (e) => {
+
+    const file = e.target.files?.[0]
+
+    if(!file) return
+
+    const formData = new FormData()
+
+    formData.append("file", file)
+
+    const res = await fetch("/api/upload",{
+      method:"POST",
+      body:formData
+    })
+
+    const data = await res.json()
+
+    setImage(data.url)
+
+  }}
+/>
+      
 
       <button
         onClick={addProduct}
